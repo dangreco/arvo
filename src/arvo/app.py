@@ -1,13 +1,10 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask
 from flask_cors import CORS
 
+from arvo.routes import route
+
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+CORS(app)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route("/api/message")
-def get_message():
-    return jsonify(message="Hello, World!")
+route(app)

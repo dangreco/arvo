@@ -25,9 +25,10 @@ tasks:
 
   test:
     desc: Test the project
-    silent: true
+    silent: false
     deps: []
-    cmds: []
+    cmds:
+      - uv run -- pytest
 
   check:
     desc: Check for linting/formatting errors
