@@ -41,7 +41,7 @@ tasks:
     deps:
       - init
     cmds:
-      - uv run -- pytest
+      - ENV=test uv run -- pytest
 
   check:
     desc: Check for linting/formatting errors
