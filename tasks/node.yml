@@ -49,5 +49,6 @@ tasks:
     silent: true
     deps:
       - init
+    dir: frontend
     cmds:
       - npm run lint
