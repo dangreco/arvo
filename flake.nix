@@ -92,6 +92,7 @@
                 buildInputs = with pkgs; [
                   ty
                   python.package
+                  nodejs_24
                 ];
 
                 shellHook = ''
@@ -111,6 +112,7 @@
               buildInputs = with pkgs; [
                 ty
                 python.package
+                nodejs_24
               ];
               shellHook = ''
                 ${config.pre-commit.shellHook}

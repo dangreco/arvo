@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 class TestSignup:
     def test_signup_success(self, client):
         response = client.post(
-            "/auth/signup",
+            "/api/auth/signup",
             json={"email": "newuser@example.com", "password": "password123"},
         )
 
@@ -19,7 +19,7 @@ class TestSignup:
 
     def test_signup_duplicate_email(self, client, test_user):
         response = client.post(
-            "/auth/signup",
+            "/api/auth/signup",
             json={"email": test_user.email, "password": "password123"},
         )
 
@@ -27,7 +27,7 @@ class TestSignup:
 
     def test_signup_missing_email(self, client):
         response = client.post(
-            "/auth/signup",
+            "/api/auth/signup",
             json={"password": "password123"},
         )
 
@@ -35,7 +35,7 @@ class TestSignup:
 
     def test_signup_missing_password(self, client):
         response = client.post(
-            "/auth/signup",
+            "/api/auth/signup",
             json={"email": "test@example.com"},
         )
 
@@ -44,7 +44,7 @@ class TestSignup:
     def test_signup_invalid_email_format(self, client):
         # Current implementation doesn't validate email format
         response = client.post(
-            "/auth/signup",
+            "/api/auth/signup",
             json={"email": "not-an-email", "password": "password123"},
         )
 
@@ -54,7 +54,7 @@ class TestSignup:
 class TestLogin:
     def test_login_success(self, client, test_user):
         response = client.post(
-            "/auth/login",
+            "/api/auth/login",
             json={"email": test_user.email, "password": "password123"},
         )
 
@@ -67,7 +67,7 @@ class TestLogin:
 
     def test_login_invalid_email(self, client):
         response = client.post(
-            "/auth/login",
+            "/api/auth/login",
             json={"email": "nonexistent@example.com", "password": "password123"},
         )
 
@@ -75,7 +75,7 @@ class TestLogin:
 
     def test_login_invalid_password(self, client, test_user):
         response = client.post(
-            "/auth/login",
+            "/api/auth/login",
             json={"email": test_user.email, "password": "wrongpassword"},
         )
 
@@ -83,7 +83,7 @@ class TestLogin:
 
     def test_login_missing_email(self, client):
         response = client.post(
-            "/auth/login",
+            "/api/auth/login",
             json={"password": "password123"},
         )
 
@@ -91,7 +91,7 @@ class TestLogin:
 
     def test_login_missing_password(self, client):
         response = client.post(
-            "/auth/login",
+            "/api/auth/login",
             json={"email": "test@example.com"},
         )
 
@@ -101,7 +101,7 @@ class TestLogin:
 class TestRefresh:
     def test_refresh_success(self, client, refresh_token):
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": f"Bearer {refresh_token}"},
         )
 
@@ -114,13 +114,13 @@ class TestRefresh:
         assert data["access"] != data["refresh"]
 
     def test_refresh_missing_authorization_header(self, client):
-        response = client.post("/auth/refresh")
+        response = client.post("/api/auth/refresh")
 
         assert response.status_code == 401
 
     def test_refresh_invalid_token_format(self, client):
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": "Bearer invalid.token.here"},
         )
 
@@ -143,7 +143,7 @@ class TestRefresh:
         )
 
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": f"Bearer {expired_token}"},
         )
 
@@ -151,7 +151,7 @@ class TestRefresh:
 
     def test_refresh_wrong_token_type(self, client, access_token):
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": f"Bearer {access_token}"},
         )
 
@@ -174,7 +174,7 @@ class TestRefresh:
         )
 
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": f"Bearer {token}"},
         )
 
@@ -182,7 +182,7 @@ class TestRefresh:
 
     def test_refresh_missing_bearer_prefix(self, client, refresh_token):
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": refresh_token},
         )
 
@@ -190,7 +190,7 @@ class TestRefresh:
 
     def test_refresh_empty_authorization_header(self, client):
         response = client.post(
-            "/auth/refresh",
+            "/api/auth/refresh",
             headers={"Authorization": ""},
         )
 

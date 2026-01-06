@@ -18,9 +18,6 @@ dependencies = [
   "werkzeug>=3.1.4",
 ]
 
-[project.optional-dependencies]
-dev = ["pytest>=8.3.4"]
-
 [project.scripts]
 arvo = "arvo:main"
 
@@ -30,3 +27,6 @@ build-backend = "uv_build"
 
 [tool.ty.environment]
 python = ".venv"
+
+[dependency-groups]
+dev = ["pytest>=9.0.2"]

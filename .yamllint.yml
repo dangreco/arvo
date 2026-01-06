@@ -3,6 +3,7 @@ extends: default
 ignore:
   - .venv/
   - .pre-commit-config.yaml
+  - frontend/node_modules/
 rules:
   truthy:
     check-keys: false

@@ -5,6 +5,7 @@ version: "3"
 includes:
   yaml: ./tasks/yaml.yml
   python: ./tasks/python.yml
+  node: ./tasks/node.yml
 
 tasks:
   default:
@@ -16,23 +17,22 @@ tasks:
   run:
     desc: Run the project
     silent: true
-    deps:
-      - python:run
-    cmds: []
+    cmds:
+      - task node:build
+      - task python:run
 
   debug:
     desc: Run the project in debug mode
     silent: true
-    deps:
-      - python:debug
-    cmds: []
+    cmds:
+      - task node:build
+      - task python:debug
 
   test:
     desc: Test the project
     silent: true
-    deps:
-      - python:test
-    cmds: []
+    cmds:
+      - task python:test
 
   check:
     desc: Check for linting/formatting errors
@@ -40,6 +40,7 @@ tasks:
     deps:
       - yaml:check
       - python:check
+      - node:check
     cmds: []
 
   fix:
