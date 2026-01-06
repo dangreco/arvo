@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/python.yml --list
+
+  run:
+    desc: Run the project
+    silent: true
+    deps: []
+    cmds:
+      - uv run arvo
+
+  debug:
+    desc: Run the project in debug mode
+    silent: true
+    deps: []
+    cmds:
+      - FLASK_DEBUG=1 uv run arvo
+
+  test:
+    desc: Test the project
+    silent: true
+    deps: []
+    cmds: []
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    cmds:
+      - ty check --error-on-warning .
+      - ruff check .
+      - ruff format --check .
+
+  fix:
+    desc: Fix linting/formatting errors
+    silent: true
+    cmds:
+      - ruff check --fix .
+      - ruff format .
