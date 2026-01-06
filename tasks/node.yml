@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    desc: List tasks
+    silent: true
+    cmds:
+      - task -t tasks/node.yml --list
+
+  init:
+    desc: Initialize project
+    silent: true
+    deps: []
+    dir: frontend
+    cmds:
+      - npm i
+
+  build:
+    desc: Build the project
+    silent: true
+    deps:
+      - init
+    dir: frontend
+    cmds:
+      - npm run build
+
+  run:
+    desc: Run the project
+    silent: true
+    deps:
+      - init
+    dir: frontend
+    cmds:
+      - npm run dev
+
+  debug:
+    desc: Run the project in debug mode
+    silent: true
+    deps:
+      - init
+    dir: frontend
+    cmds:
+      - npm run dev
+
+  check:
+    desc: Check for linting/formatting errors
+    silent: true
+    deps:
+      - init
+    cmds:
+      - npm run lint
