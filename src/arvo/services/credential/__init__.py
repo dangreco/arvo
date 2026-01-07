@@ -10,7 +10,7 @@ class CredentialService:
         return user.credentials
 
     @staticmethod
-    def delete_credential_by_id(user: User, id: int) -> Credential:
+    def get_credential_by_id(user: User, id: int) -> Credential:
         credential = (
             db.session.query(Credential)
             .filter_by(id=id)
@@ -20,6 +20,12 @@ class CredentialService:
 
         if not credential:
             raise ValueError("Credential not found")
+
+        return credential
+
+    @staticmethod
+    def delete_credential_by_id(user: User, id: int) -> Credential:
+        credential = CredentialService.get_credential_by_id(user, id)
 
         db.session.delete(credential)
         db.session.commit()
