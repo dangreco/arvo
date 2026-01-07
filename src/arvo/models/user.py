@@ -5,6 +5,7 @@ from arvo.models.__base__ import Base
 
 if TYPE_CHECKING:
     from arvo.models.credential import Credential
+    from arvo.models.deployment import Deployment
 
 
 class User(Base):
@@ -15,6 +16,11 @@ class User(Base):
     password: Mapped[str] = mapped_column(nullable=False)
 
     credentials: Mapped[list["Credential"]] = relationship(
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    deployments: Mapped[list["Deployment"]] = relationship(
         back_populates="user",
         cascade="all, delete-orphan",
     )

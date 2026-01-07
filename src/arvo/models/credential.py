@@ -7,6 +7,7 @@ from arvo.models.__base__ import Base
 
 if TYPE_CHECKING:
     from arvo.models.user import User
+    from arvo.models.deployment import Deployment
 
 
 class CredentialType(Enum):
@@ -22,6 +23,11 @@ class Credential(Base):
 
     user: Mapped["User"] = relationship(back_populates="credentials")
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+
+    deployments: Mapped[list["Deployment"]] = relationship(
+        back_populates="credential",
+        cascade="all, delete-orphan",
+    )
 
     __mapper_args__ = {
         "polymorphic_on": type,
