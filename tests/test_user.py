@@ -3,7 +3,7 @@ import json
 
 class TestGetUser:
     def test_get_user_success(self, client, test_user, auth_headers):
-        response = client.get("/user/", headers=auth_headers)
+        response = client.get("/api/user/", headers=auth_headers)
 
         assert response.status_code == 200
         data = json.loads(response.data)
@@ -11,13 +11,13 @@ class TestGetUser:
         assert data["email"] == test_user.email
 
     def test_get_user_missing_token(self, client):
-        response = client.get("/user/")
+        response = client.get("/api/user/")
 
         assert response.status_code == 401
 
     def test_get_user_invalid_token(self, client):
         response = client.get(
-            "/user/", headers={"Authorization": "Bearer invalid_token"}
+            "/api/user/", headers={"Authorization": "Bearer invalid_token"}
         )
 
         assert response.status_code == 401
@@ -38,19 +38,19 @@ class TestGetUser:
         )
 
         response = client.get(
-            "/user/", headers={"Authorization": f"Bearer {expired_token}"}
+            "/api/user/", headers={"Authorization": f"Bearer {expired_token}"}
         )
 
         assert response.status_code == 401
 
     def test_get_user_wrong_token_type(self, client, refresh_token):
         response = client.get(
-            "/user/", headers={"Authorization": f"Bearer {refresh_token}"}
+            "/api/user/", headers={"Authorization": f"Bearer {refresh_token}"}
         )
 
         assert response.status_code == 401
 
     def test_get_user_malformed_auth_header(self, client, access_token):
-        response = client.get("/user/", headers={"Authorization": access_token})
+        response = client.get("/api/user/", headers={"Authorization": access_token})
 
         assert response.status_code == 401

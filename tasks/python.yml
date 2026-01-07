@@ -9,38 +9,55 @@ tasks:
     cmds:
       - task -t tasks/python.yml --list
 
+  init:
+    desc: Initialize project
+    silent: true
+    deps: []
+    generates:
+      - .venv/bin/activate
+    cmds:
+      - uv venv --allow-existing
+      - uv sync
+
   run:
     desc: Run the project
     silent: true
-    deps: []
+    deps:
+      - init
     cmds:
       - uv run arvo
 
   debug:
     desc: Run the project in debug mode
     silent: true
-    deps: []
+    deps:
+      - init
     cmds:
       - FLASK_DEBUG=1 uv run arvo
 
   test:
     desc: Test the project
     silent: false
-    deps: []
+    deps:
+      - init
     cmds:
-      - uv run -- pytest
+      - ENV=test uv run -- pytest
 
   check:
     desc: Check for linting/formatting errors
     silent: true
+    deps:
+      - init
     cmds:
-      - ty check --error-on-warning .
-      - ruff check .
-      - ruff format --check .
+      - uv run ty check --error-on-warning .
+      - uv run ruff check .
+      - uv run ruff format --check .
 
   fix:
     desc: Fix linting/formatting errors
     silent: true
+    deps:
+      - init
     cmds:
-      - ruff check --fix .
-      - ruff format .
+      - uv run ruff check --fix .
+      - uv run ruff format .
